@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    tools:context=".PantallaInicioApp">
+
+    <FrameLayout
+        android:id="@+id/carta1"
+        android:layout_width="180dp"
+        android:layout_height="150dp"
+        android:layout_gravity="top|start"
+        android:src="@drawable/receta1"/>
+    <FrameLayout
+        android:id="@+id/carta2"
+        android:layout_width="180dp"
+        android:layout_height="150dp"
+        android:layout_gravity="top|end"/>
+    <FrameLayout
+        android:id="@+id/carta3"
+        android:layout_width="180dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center|start"/>
+    <FrameLayout
+        android:id="@+id/carta4"
+        android:layout_width="180dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center|end"/>
+    <FrameLayout
+        android:id="@+id/carta5"
+        android:layout_width="180dp"
+        android:layout_height="150dp"
+        android:layout_gravity="bottom|start"/>
+    <FrameLayout
+        android:id="@+id/carta6"
+        android:layout_width="180dp"
+        android:layout_height="150dp"
+        android:layout_gravity="bottom|end"/>
+
+</FrameLayout>
