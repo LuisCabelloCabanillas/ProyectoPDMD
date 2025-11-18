@@ -1,1 +1,2 @@
 # ProyectoPMDM
+En este proyecto vamos a hacer un trabajo basado en una aplicación de recetas, en la cual podremos ver varios tipos de recetas que una vez que pulsemos en una carta(Button) nos redigirá hacia una pestaña que estará conectada con una base de datos que tendrá el nombre, los productos necesarios, como hacer la receta. En la misma activity existirá un botón que nos pedirá permisos para dirigirse a Google y poder ver más información sobre la receta.
