@@ -12,6 +12,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoPMDM">
         <activity
+            android:name=".Anhadir_receta"
+            android:exported="false" />
+        <activity
+            android:name=".Descrip_Recetas"
+            android:exported="false" />
+        <activity
+            android:name=".Registrarse"
+            android:exported="false" />
+        <activity
+            android:name=".Inicio_sesion"
+            android:exported="false" />
+        <activity
             android:name=".PantallaInicioApp"
             android:exported="false" />
         <activity
