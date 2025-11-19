@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "556614691844",
+    "project_id": "recetapp-ca1fb",
+    "storage_bucket": "recetapp-ca1fb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:556614691844:android:2d8f93e41c817f6b749951",
+        "android_client_info": {
+          "package_name": "com.example.proyectopmdm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAI46b-FBC-wyIieOj72Lq1lFdWw3pIGfE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
