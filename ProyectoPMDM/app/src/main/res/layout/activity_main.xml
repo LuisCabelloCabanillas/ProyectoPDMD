@@ -20,13 +20,27 @@
         />
 
     <Button
-        android:id="@+id/BotonInicio"
+        android:id="@+id/BotonLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Entrar en la APP"
-        app:layout_constraintStart_toStartOf="parent"
+        android:text="Iniciar Sesión"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/BotonCrearCuenta"
         app:layout_constraintTop_toTopOf="@+id/TituloApp"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintVertical_bias="0.537" />
+
+    <Button
+        android:id="@+id/BotonCrearCuenta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Registrarse"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.003"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/TituloApp"
+        app:layout_constraintVertical_bias="0.537" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
