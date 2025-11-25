@@ -16,7 +16,7 @@ class Inicio_sesion : AppCompatActivity() {
         val btnRegistrar = findViewById<Button>(R.id.btnRegis)
 
         btnRegistrar.setOnClickListener {
-            val intent = Intent(this, Anhadir_receta::class.java)
+            val intent = Intent(this, PantallaInicioApp::class.java)
             startActivity(intent)
         }
     }

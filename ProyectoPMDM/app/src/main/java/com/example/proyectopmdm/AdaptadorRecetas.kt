@@ -25,7 +25,7 @@ class AdaptadorRecetas(private val listaRecetas: MutableList<Receta>) :
     override fun onBindViewHolder(holder: RecetaViewHolder, position: Int) {
         val receta = listaRecetas[position]
         Glide.with(holder.itemView.context)
-            .load(receta.fotoUri) // Uri? funciona
+            .load(receta.fotoUri)
             .into(holder.imagen)
         holder.titulo.text = receta.titulo
     }
