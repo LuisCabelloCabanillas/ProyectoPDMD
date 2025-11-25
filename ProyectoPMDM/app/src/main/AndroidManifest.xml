@@ -15,7 +15,7 @@
             android:name=".Anhadir_receta"
             android:exported="false" />
         <activity
-            android:name=".Descrip_Recetas"
+            android:name=".Detalle_Receta"
             android:exported="false" />
         <activity
             android:name=".Registrarse"
