@@ -39,7 +39,7 @@ class Anhadir_receta : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_anhadir_receta)
+        setContentView(R.layout.activity_pantalla_inicio)
 
         // Toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
