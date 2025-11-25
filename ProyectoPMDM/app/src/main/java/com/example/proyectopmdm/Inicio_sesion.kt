@@ -1,10 +1,11 @@
 package com.example.proyectopmdm
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+
 
 class Inicio_sesion : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -12,5 +13,11 @@ class Inicio_sesion : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_inicio_sesion)
 
+        val btnRegistrar = findViewById<Button>(R.id.btnRegis)
+
+        btnRegistrar.setOnClickListener {
+            val intent = Intent(this, Anhadir_receta::class.java)
+            startActivity(intent)
+        }
     }
 }
