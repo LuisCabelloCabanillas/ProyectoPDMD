@@ -6,12 +6,24 @@
     android:padding="24dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    android:gravity="center"
+    android:background="@drawable/fondo_degradado_invertido">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:background="@drawable/bordes_foto"
+        android:scaleType="centerCrop"
+        android:src="@drawable/logo" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/redondear" >
+        android:background="@drawable/redondear">
+
+
         <EditText
             android:id="@+id/edtCorreo"
             android:layout_width="350dp"
@@ -30,9 +42,12 @@
             android:layout_width="350dp"/>
 
         <Button
-            android:id="@+id/btnRegis"
+            android:id="@+id/btnInSe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Registrar" />
+            android:text="Iniciar Sesión"
+            android:layout_gravity="center"
+            android:backgroundTint="#1565C0"
+            />
     </LinearLayout>
 </LinearLayout>

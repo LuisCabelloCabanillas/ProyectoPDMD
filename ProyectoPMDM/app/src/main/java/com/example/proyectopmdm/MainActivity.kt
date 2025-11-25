@@ -15,10 +15,17 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        val boton = findViewById<Button>(R.id.BotonCrearCuenta)
+        val botonlog = findViewById<Button>(R.id.BotonLogin)
+        val botonin = findViewById<Button>(R.id.BotonCrearCuenta)
 
-        boton.setOnClickListener {
+
+
+        botonlog.setOnClickListener {
             startActivity(Intent(this, Inicio_sesion::class.java))
+        }
+
+        botonin.setOnClickListener {
+            startActivity(Intent(this, Registrarse::class.java))
         }
     }
 }
