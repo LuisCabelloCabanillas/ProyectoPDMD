@@ -18,8 +18,6 @@ class Anhadir_receta : AppCompatActivity() {
     private lateinit var recyclerRecetas: RecyclerView
     private lateinit var adaptador: AdaptadorRecetas
     private val listaRecetas = mutableListOf<Receta>()
-
-    // Lanzador moderno para recibir resultados del formulario
     private val lanzarFormulario = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { resultado ->
@@ -41,18 +39,15 @@ class Anhadir_receta : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_pantalla_inicio)
 
-        // Toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         toolbar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
 
-        // RecyclerView
         recyclerRecetas = findViewById(R.id.recyclerRecetas)
         recyclerRecetas.layoutManager = LinearLayoutManager(this)
         adaptador = AdaptadorRecetas(listaRecetas)
         recyclerRecetas.adapter = adaptador
 
-        // Botón añadir receta
         val botonAgregar = findViewById<Button>(R.id.btnAdd)
         botonAgregar.setOnClickListener {
             val intent = Intent(this, Formulario_Anhadir::class.java)

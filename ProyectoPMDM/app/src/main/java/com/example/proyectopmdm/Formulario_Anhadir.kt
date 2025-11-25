@@ -38,12 +38,10 @@ class Formulario_Anhadir : AppCompatActivity() {
         val edtIngredientes = findViewById<EditText>(R.id.edtIngredientesForm)
         val botonAñadir = findViewById<Button>(R.id.btnAñadirForm)
 
-        // Botón para abrir la galería
         botonSeleccionar.setOnClickListener {
-            seleccionarImagenLauncher.launch("image/*") // Solo imágenes
+            seleccionarImagenLauncher.launch("image/*")
         }
 
-        // Botón añadir receta
         botonAñadir.setOnClickListener {
             val titulo = edtTitulo.text.toString()
             val descripcion = edtDescripcion.text.toString()
@@ -55,7 +53,6 @@ class Formulario_Anhadir : AppCompatActivity() {
                 resultado.putExtra("descripcion", descripcion)
                 resultado.putExtra("ingredientes", ingredientes)
 
-                // Pasar la Uri de la imagen como String
                 fotoSeleccionadaUri?.let { uri ->
                     resultado.putExtra("fotoUri", uri.toString())
                 }
