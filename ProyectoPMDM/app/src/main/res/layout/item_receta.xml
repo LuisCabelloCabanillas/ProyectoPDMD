@@ -27,7 +27,7 @@
 
 
         <TextView
-            android:id="@+id/tvNombre"
+            android:id="@+id/cardNombre"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Nombre de la receta"
