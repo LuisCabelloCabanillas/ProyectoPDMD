@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="6dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="#D0D0D0">
+    
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        
+        <ImageView
+            android:id="@+id/fotoReceta"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher_background"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+
+        <TextView
+            android:id="@+id/cardNombreReceta"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Nombre de la receta"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            app:layout_constraintStart_toEndOf="@id/fotoReceta"
+            app:layout_constraintTop_toTopOf="@id/fotoReceta"
+            android:layout_marginStart="12dp"/>
+            <!-- app:layout_constraintEnd_toStartOf="@id/btnMenuReceta" -->
+
+
+
+        <TextView
+            android:id="@+id/tvTiempo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="25 min"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray"
+            app:layout_constraintStart_toStartOf="@id/cardNombreReceta"
+            app:layout_constraintTop_toBottomOf="@id/cardNombreReceta"
+            android:layout_marginTop="6dp"/>
+
+
+        <TextView
+            android:id="@+id/tvDificultad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fácil"
+            android:textSize="14sp"
+            android:textColor="@android:color/holo_green_dark"
+            app:layout_constraintStart_toEndOf="@id/tvTiempo"
+            app:layout_constraintTop_toTopOf="@id/tvTiempo"
+            android:layout_marginStart="12dp"/>
+
+        <!--
+        <ImageButton
+            android:id="@+id/btnMenuReceta"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="Menu"
+            app:tint="@android:color/black"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/> -->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
