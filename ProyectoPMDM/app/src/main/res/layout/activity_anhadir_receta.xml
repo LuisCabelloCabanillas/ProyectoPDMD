@@ -14,8 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="180dp"
             android:scaleType="centerCrop"
-            android:background="#E0E0E0"
-            android:contentDescription="Foto de la receta" />
+            android:background="#E0E0E0" />
 
         <Button
             android:id="@+id/btnSeleccionarImagenForm"
@@ -28,7 +27,8 @@
             android:id="@+id/edtNombreForm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nombre Receta" />
+            android:hint="Nombre Receta"
+            android:layout_marginTop="12dp" />
 
         <EditText
             android:id="@+id/edtDescripcionForm"
@@ -37,15 +37,51 @@
             android:hint="Descripción"
             android:layout_marginTop="8dp" />
 
+        <!-- DURACIÓN -->
         <EditText
-            android:id="@+id/edtIngredientesForm"
+            android:id="@+id/edtDuracionForm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Ingredientes"
-            android:layout_marginTop="8dp" />
+            android:inputType="number"
+            android:layout_marginTop="12dp"
+            android:hint="Duración (minutos)" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ingredientes:"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:textSize="16sp"/>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilDificultad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etIngredienteForm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nuevo ingrediente"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAgregarIngrediente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Añadir ingrediente"
+            android:layout_marginTop="8dp"/>
+
+        <LinearLayout
+            android:id="@+id/layoutIngredientes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="12dp"/>
+
+        <!-- DIFICULTAD -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/mostrarDificultad"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -65,5 +101,6 @@
             android:layout_marginTop="12dp"
             android:backgroundTint="#AA02B0"
             android:textColor="@android:color/white"/>
+
     </LinearLayout>
 </ScrollView>
