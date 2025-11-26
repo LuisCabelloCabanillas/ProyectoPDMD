@@ -52,7 +52,7 @@ class PantallaInicioApp : AppCompatActivity() {
         val btnAddReceta = findViewById<FloatingActionButton>(R.id.btnAddReceta)
         btnAddReceta.setOnClickListener {
             val intent = Intent(this, Anhadir_receta::class.java)
-
+            lanzarFormulario.launch(intent)
         }
     }
 }
