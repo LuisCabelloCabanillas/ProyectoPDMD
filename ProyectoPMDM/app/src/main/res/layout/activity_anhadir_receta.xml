@@ -25,10 +25,10 @@
             android:layout_marginTop="8dp" />
 
         <EditText
-            android:id="@+id/edtTituloForm"
+            android:id="@+id/edtNombreForm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Título" />
+            android:hint="Nombre Receta" />
 
         <EditText
             android:id="@+id/edtDescripcionForm"
@@ -43,6 +43,19 @@
             android:layout_height="wrap_content"
             android:hint="Ingredientes"
             android:layout_marginTop="8dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilDificultad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Dificultad">
+
+            <AutoCompleteTextView
+                android:id="@+id/spnDificultad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/btnAñadirForm"

@@ -1,5 +1,6 @@
 package com.example.proyectopmdm
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -23,6 +24,7 @@ class Anhadir_receta : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -30,7 +32,7 @@ class Anhadir_receta : AppCompatActivity() {
 
         imgReceta = findViewById(R.id.imgRecetaForm)
         val botonSeleccionar = findViewById<Button>(R.id.btnSeleccionarImagenForm)
-        val edtTitulo = findViewById<EditText>(R.id.edtTituloForm)
+        val edtNombre = findViewById<EditText>(R.id.edtNombreForm)
         val edtDescripcion = findViewById<EditText>(R.id.edtDescripcionForm)
         val edtIngredientes = findViewById<EditText>(R.id.edtIngredientesForm)
         val botonAñadir = findViewById<Button>(R.id.btnAñadirForm)
@@ -40,13 +42,13 @@ class Anhadir_receta : AppCompatActivity() {
         }
 
         botonAñadir.setOnClickListener {
-            val titulo = edtTitulo.text.toString()
+            val nombre = edtNombre.text.toString()
             val descripcion = edtDescripcion.text.toString()
             val ingredientes = edtIngredientes.text.toString()
 
-            if (titulo.isNotEmpty()) {
+            if (nombre.isNotEmpty()) {
                 val resultado = Intent()
-                resultado.putExtra("nombre", titulo)
+                resultado.putExtra("nombre", nombre)
                 resultado.putExtra("descripcion", descripcion)
                 resultado.putExtra("ingredientes", ingredientes)
 
