@@ -46,7 +46,7 @@ class Anhadir_receta : AppCompatActivity() {
 
             if (titulo.isNotEmpty()) {
                 val resultado = Intent()
-                resultado.putExtra("titulo", titulo)
+                resultado.putExtra("nombre", titulo)
                 resultado.putExtra("descripcion", descripcion)
                 resultado.putExtra("ingredientes", ingredientes)
 

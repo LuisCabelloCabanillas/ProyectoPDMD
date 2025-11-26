@@ -1,4 +1,5 @@
 package com.example.proyectopmdm
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,7 @@ class AdaptadorRecetas(private val listaRecetas: MutableList<Receta>) :
     class RecetaViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val imagen = v.findViewById<ImageView>(R.id.fotoReceta)
 
-        val nombre = v.findViewById<TextView>(R.id.cardNombre)
+        val nombre = v.findViewById<TextView>(R.id.cardNombreReceta)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecetaViewHolder {

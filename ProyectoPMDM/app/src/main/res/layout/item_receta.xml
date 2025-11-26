@@ -27,7 +27,7 @@
 
 
         <TextView
-            android:id="@+id/cardNombre"
+            android:id="@+id/cardNombreReceta"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Nombre de la receta"
@@ -36,8 +36,9 @@
             android:textColor="@android:color/black"
             app:layout_constraintStart_toEndOf="@id/fotoReceta"
             app:layout_constraintTop_toTopOf="@id/fotoReceta"
-            app:layout_constraintEnd_toStartOf="@id/btnMenuReceta"
             android:layout_marginStart="12dp"/>
+            <!-- app:layout_constraintEnd_toStartOf="@id/btnMenuReceta" -->
+
 
 
         <TextView
@@ -47,8 +48,8 @@
             android:text="25 min"
             android:textSize="14sp"
             android:textColor="@android:color/darker_gray"
-            app:layout_constraintStart_toStartOf="@id/cardNombre"
-            app:layout_constraintTop_toBottomOf="@id/cardNombre"
+            app:layout_constraintStart_toStartOf="@id/cardNombreReceta"
+            app:layout_constraintTop_toBottomOf="@id/cardNombreReceta"
             android:layout_marginTop="6dp"/>
 
 
@@ -63,17 +64,16 @@
             app:layout_constraintTop_toTopOf="@id/tvTiempo"
             android:layout_marginStart="12dp"/>
 
-
+        <!--
         <ImageButton
             android:id="@+id/btnMenuReceta"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:background="@android:color/transparent"
-            
             android:contentDescription="Menu"
             app:tint="@android:color/black"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"/> -->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
