@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoPMDM">
         <activity
+            android:name=".EditarRecetaActivity"
+            android:exported="false" />
+        <activity
             android:name=".Anhadir_receta"
             android:exported="false" />
         <activity
