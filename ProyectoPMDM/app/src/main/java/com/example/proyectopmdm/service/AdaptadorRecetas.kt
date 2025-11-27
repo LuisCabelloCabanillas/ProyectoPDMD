@@ -1,5 +1,4 @@
 package com.example.proyectopmdm
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,15 +9,14 @@ import com.bumptech.glide.Glide
 import com.example.proyectopmdm.models.Receta
 
 
+
+
 class AdaptadorRecetas(private val listaRecetas: MutableList<Receta>) :
     RecyclerView.Adapter<AdaptadorRecetas.RecetaViewHolder>() {
 
     class RecetaViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val imagen = v.findViewById<ImageView>(R.id.fotoReceta)
-
-        val nombre = v.findViewById<TextView>(R.id.cardNombreReceta)
-
-        val btnMenu = v.findViewById<ImageView>(R.id.btnMenuReceta)
+        val titulo = v.findViewById<TextView>(R.id.cardNombreReceta)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecetaViewHolder {
@@ -32,32 +30,7 @@ class AdaptadorRecetas(private val listaRecetas: MutableList<Receta>) :
         Glide.with(holder.itemView.context)
             .load(receta.fotoUri) // Uri? funciona
             .into(holder.imagen)
-        holder.nombre.text = receta.nombre
-
-        holder.btnMenu.setOnClickListener {
-            val popupMenuReceta = android.widget.PopupMenu(holder.itemView.context, holder.btnMenu)
-            popupMenuReceta.menuInflater.inflate(R.menu.menu_receta, popupMenuReceta.menu)
-            popupMenuReceta.setOnMenuItemClickListener { menuItem ->
-                when (menuItem.itemId) {
-                    R.id.btnMenuRecetaEditar -> {
-                        // Aquí lanza la acción editar, por ejemplo:
-                        // Lanza una función que tengas para editar o lanza un intent con la receta
-                        // Por ahora solo un Toast
-                        android.widget.Toast.makeText(holder.itemView.context,
-                            "Editar ${receta.nombre}", android.widget.Toast.LENGTH_SHORT).show()
-                        true
-                    }
-                    R.id.btnMenuRecetaEliminar -> {
-                        // Acción eliminar
-                        android.widget.Toast.makeText(holder.itemView.context,
-                            "Eliminar ${receta.nombre}", android.widget.Toast.LENGTH_SHORT).show()
-                        true
-                    }
-                    else -> false
-                }
-            }
-            popupMenuReceta.show()
-        }
+        holder.titulo.text = receta.nombre
     }
 
     override fun getItemCount(): Int = listaRecetas.size

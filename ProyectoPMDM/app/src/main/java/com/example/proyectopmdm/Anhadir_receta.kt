@@ -1,68 +1,62 @@
 package com.example.proyectopmdm
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.*
+import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+
+
 
 class Anhadir_receta : AppCompatActivity() {
-    private lateinit var imgReceta: ImageView
-    private var fotoSeleccionadaUri: Uri? = null
 
-    private val seleccionarImagenLauncher = registerForActivityResult(
-        ActivityResultContracts.GetContent()
-    ) { uri: Uri? ->
-        if (uri != null) {
-            fotoSeleccionadaUri = uri
-            imgReceta.setImageURI(uri)
+    private lateinit var recyclerRecetas: RecyclerView
+    private lateinit var adaptador: AdaptadorRecetas
+    private val listaRecetas = mutableListOf<Receta>()
+
+    // Lanzador moderno para recibir resultados del formulario
+    private val lanzarFormulario = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { resultado ->
+        if (resultado.resultCode == RESULT_OK) {
+            val data = resultado.data
+            val titulo = data?.getStringExtra("titulo") ?: ""
+            val descripcion = data?.getStringExtra("descripcion") ?: ""
+            val ingredientes = data?.getStringExtra("ingredientes") ?: ""
+            val fotoUriString = data?.getStringExtra("fotoUri")
+            val fotoUri = fotoUriString?.let { Uri.parse(it) }
+
+            val recetaNueva = Receta(titulo, fotoUri, descripcion, ingredientes)
+            adaptador.agregarReceta(recetaNueva)
         }
     }
 
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_anhadir_receta)
 
-        imgReceta = findViewById(R.id.imgRecetaForm)
-        val botonSeleccionar = findViewById<Button>(R.id.btnSeleccionarImagenForm)
-        val edtNombre = findViewById<EditText>(R.id.edtNombreForm)
-        val edtDescripcion = findViewById<EditText>(R.id.edtDescripcionForm)
-        val edtIngredientes = findViewById<EditText>(R.id.edtIngredientesForm)
-        val botonAñadir = findViewById<Button>(R.id.btnAñadirForm)
+        // Toolbar
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        toolbar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
 
-        botonSeleccionar.setOnClickListener {
-            seleccionarImagenLauncher.launch("image/*")
-        }
+        // RecyclerView
+        recyclerRecetas = findViewById(R.id.recyclerRecetas)
+        recyclerRecetas.layoutManager = LinearLayoutManager(this)
+        adaptador = AdaptadorRecetas(listaRecetas)
+        recyclerRecetas.adapter = adaptador
 
-        botonAñadir.setOnClickListener {
-            val nombre = edtNombre.text.toString()
-            val descripcion = edtDescripcion.text.toString()
-            val ingredientes = edtIngredientes.text.toString()
-
-            if (nombre.isNotEmpty()) {
-                val resultado = Intent()
-                resultado.putExtra("nombre", nombre)
-                resultado.putExtra("descripcion", descripcion)
-                resultado.putExtra("ingredientes", ingredientes)
-
-                fotoSeleccionadaUri?.let { uri ->
-                    resultado.putExtra("fotoUri", uri.toString())
-                }
-
-                setResult(RESULT_OK, resultado)
-                finish()
-            } else {
-                Toast.makeText(this, "Debes escribir un título", Toast.LENGTH_SHORT).show()
-            }
+        // Botón añadir receta
+        val botonAgregar = findViewById<Button>(R.id.btnAdd)
+        botonAgregar.setOnClickListener {
+            val intent = Intent(this, Formulario_Anhadir::class.java)
+            lanzarFormulario.launch(intent)
         }
     }
-
-
 }

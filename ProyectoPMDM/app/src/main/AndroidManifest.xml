@@ -11,33 +11,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoPMDM">
-        <activity
-            android:name=".EditarRecetaActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Anhadir_receta"
-            android:exported="false" />
-        <activity
-            android:name=".Detalle_Receta"
-            android:exported="false" />
-        <activity
-            android:name=".Registrarse"
-            android:exported="false" />
-        <activity
-            android:name=".Inicio_sesion"
-            android:exported="false" />
-        <activity
-            android:name=".PantallaInicioApp"
-            android:exported="false" />
+
+        <activity android:name=".Anhadir_receta" android:exported="true" />
+        <activity android:name=".Descrip_Recetas" android:exported="true" />
+        <activity android:name=".Registrarse" android:exported="true" />
+        <activity android:name=".Inicio_sesion" android:exported="true" />
+        <activity android:name=".PantallaInicioApp" android:exported="true" />
+        <activity android:name=".Formulario_Anhadir" android:exported="true" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

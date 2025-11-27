@@ -9,4 +9,4 @@ data class Receta (
     val descripcion: String,
     val ingredientes: String
 
-    )
+)
