@@ -31,4 +31,43 @@
 
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/cardDuracion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="25 min"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray"
+            app:layout_constraintStart_toStartOf="@id/cardNombreReceta"
+            app:layout_constraintTop_toBottomOf="@id/cardNombreReceta"
+            android:layout_marginTop="6dp"/>
+
+
+        <TextView
+            android:id="@+id/cardDificultad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fácil"
+            android:textSize="14sp"
+            android:textColor="@android:color/holo_green_dark"
+            app:layout_constraintStart_toEndOf="@id/cardDuracion"
+            app:layout_constraintTop_toTopOf="@id/cardDuracion"
+            android:layout_marginStart="12dp"/>
+
+
+        <ImageButton
+            android:id="@+id/btnMenuReceta"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Menu"
+            app:tint="@android:color/black"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/ic_more_vert_24"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

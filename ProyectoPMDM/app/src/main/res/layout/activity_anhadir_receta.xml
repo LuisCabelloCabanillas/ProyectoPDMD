@@ -3,31 +3,94 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:padding="16dp">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/purple_500"
-        app:title="RecetApp"
-        app:titleTextColor="@android:color/white"
-        app:navigationIcon="@drawable/baseline_arrow_back_ios_24"
-        app:menu="@menu/menu_toolbar" />
-
-    <Button
-        android:id="@+id/btnAdd"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Añadir receta"
-        android:layout_margin="16dp"
-        android:backgroundTint="@color/purple_500"
-        android:textColor="@android:color/white" />
+        android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerRecetas"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="8dp"/>
-</LinearLayout>
+        <ImageView
+            android:id="@+id/imgRecetaForm"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_launcher_background" />
+
+        <Button
+            android:id="@+id/btnSeleccionarImagenForm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Seleccionar imagen"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp" />
+
+        <EditText
+            android:id="@+id/edtNombreForm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nombre de la receta"
+            android:layout_marginTop="16dp" />
+
+        <EditText
+            android:id="@+id/edtDescripcionForm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Descripción" />
+
+        <EditText
+            android:id="@+id/edtDuracionForm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="Duración (minutos)" />
+
+        <!-- DIFICULTAD AUTOCOMPLETE -->
+        <AutoCompleteTextView
+            android:id="@+id/spnDificultad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Dificultad"
+            android:focusable="false"
+            android:inputType="none"
+            android:layout_marginTop="16dp" />
+
+        <!-- INGREDIENTES -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+
+            <EditText
+                android:id="@+id/etIngredienteForm"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Ingrediente" />
+
+            <Button
+                android:id="@+id/btnAgregarIngrediente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Añadir" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutIngredientes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp" />
+
+        <Button
+            android:id="@+id/btnAñadirForm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Guardar receta"
+            android:layout_marginTop="25dp" />
+
+    </LinearLayout>
+
+</ScrollView>

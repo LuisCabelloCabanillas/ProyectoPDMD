@@ -7,32 +7,21 @@ import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-
-
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.google.android.gms.common.internal.Objects
+import kotlin.time.Duration
 
 class Anhadir_receta : AppCompatActivity() {
 
-    private lateinit var recyclerRecetas: RecyclerView
-    private lateinit var adaptador: AdaptadorRecetas
-    private val listaRecetas = mutableListOf<Receta>()
+    private val listaIngredientes = mutableListOf<String>()
 
-    // Lanzador moderno para recibir resultados del formulario
-    private val lanzarFormulario = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { resultado ->
-        if (resultado.resultCode == RESULT_OK) {
-            val data = resultado.data
-            val titulo = data?.getStringExtra("titulo") ?: ""
-            val descripcion = data?.getStringExtra("descripcion") ?: ""
-            val ingredientes = data?.getStringExtra("ingredientes") ?: ""
-            val fotoUriString = data?.getStringExtra("fotoUri")
-            val fotoUri = fotoUriString?.let { Uri.parse(it) }
-
-            val recetaNueva = Receta(titulo, fotoUri, descripcion, ingredientes)
-            adaptador.agregarReceta(recetaNueva)
+    private val seleccionarImagenLauncher = registerForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        if (uri != null) {
+            fotoSeleccionadaUri = uri
+            imgReceta.setImageURI(uri)
         }
     }
 
@@ -41,10 +30,16 @@ class Anhadir_receta : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_anhadir_receta)
 
-        // Toolbar
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        toolbar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
+        imgReceta = findViewById(R.id.imgRecetaForm)
+        val botonSeleccionar = findViewById<Button>(R.id.btnSeleccionarImagenForm)
+        val edtNombre = findViewById<EditText>(R.id.edtNombreForm)
+        val edtDescripcion = findViewById<EditText>(R.id.edtDescripcionForm)
+        val edtDuracion = findViewById<EditText>(R.id.edtDuracionForm)
+        val edtIngrediente = findViewById<EditText>(R.id.etIngredienteForm)
+        val btnAgregarIng = findViewById<Button>(R.id.btnAgregarIngrediente)
+        val layoutIngredientes = findViewById<LinearLayout>(R.id.layoutIngredientes)
+        val spnDificultad = findViewById<AutoCompleteTextView>(R.id.spnDificultad)
+        val botonAñadir = findViewById<Button>(R.id.btnAñadirForm)
 
         // RecyclerView
         recyclerRecetas = findViewById(R.id.recyclerRecetas)
@@ -52,11 +47,63 @@ class Anhadir_receta : AppCompatActivity() {
         adaptador = AdaptadorRecetas(listaRecetas)
         recyclerRecetas.adapter = adaptador
 
-        // Botón añadir receta
-        val botonAgregar = findViewById<Button>(R.id.btnAdd)
-        botonAgregar.setOnClickListener {
-            val intent = Intent(this, Formulario_Anhadir::class.java)
-            lanzarFormulario.launch(intent)
+        val opciones = listOf("Fácil", "Media", "Alta")
+        val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, opciones)
+        spnDificultad.setAdapter(adapter)
+
+        spnDificultad.setOnClickListener {
+            spnDificultad.showDropDown()
+        }
+
+
+
+
+        btnAgregarIng.setOnClickListener {
+            val texto = edtIngrediente.text.toString().trim()
+
+            if (texto.isNotEmpty()) {
+                listaIngredientes.add(texto)
+
+                val tv = TextView(this)
+                tv.text = "- $texto"
+                layoutIngredientes.addView(tv)
+
+                edtIngrediente.setText("")
+            }
+        }
+
+        botonAñadir.setOnClickListener {
+            val nombre = edtNombre.text.toString()
+            val descripcion = edtDescripcion.text.toString()
+            val duracion = edtDuracion.text.toString()
+            val dificultad = spnDificultad.text.toString()
+
+            if (nombre.isEmpty()) {
+                Toast.makeText(this, "El nombre de la receta es obligatorio", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (duracion.isEmpty()) {
+                Toast.makeText(this, "La duracion de la receta es obligatoria", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+
+            val resultado = Intent()
+
+            resultado.putExtra("nombre", nombre)
+            resultado.putExtra("descripcion", descripcion)
+            resultado.putExtra("duracion", duracion)
+            resultado.putExtra("dificultad", dificultad)
+            resultado.putStringArrayListExtra("ingredientes", ArrayList(listaIngredientes))
+
+            fotoSeleccionadaUri?.let { uri ->
+                resultado.putExtra("fotoUri", uri.toString())
+            }
+
+            setResult(RESULT_OK, resultado)
+            finish()
+
         }
     }
 }
