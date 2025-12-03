@@ -40,7 +40,7 @@ class AdaptadorRecetas(private val listaRecetas: MutableList<Receta>) :
             .into(holder.imagen)
         holder.nombre.text = receta.nombre
 
-        holder.duracion.text = "${receta.duracion}"
+        holder.duracion.text = "${receta.duracion} min"
         holder.dificultad.text = receta.dificultad
 
         holder.btnMenu.setOnClickListener {
