@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -29,9 +29,6 @@
             android:textStyle="bold"
             android:textSize="18sp" />
 
-    </LinearLayout>
-
-
         <TextView
             android:id="@+id/cardDuracion"
             android:layout_width="wrap_content"
@@ -39,10 +36,7 @@
             android:text="25 min"
             android:textSize="14sp"
             android:textColor="@android:color/darker_gray"
-            app:layout_constraintStart_toStartOf="@id/cardNombreReceta"
-            app:layout_constraintTop_toBottomOf="@id/cardNombreReceta"
             android:layout_marginTop="6dp"/>
-
 
         <TextView
             android:id="@+id/cardDificultad"
@@ -51,10 +45,8 @@
             android:text="Fácil"
             android:textSize="14sp"
             android:textColor="@android:color/holo_green_dark"
-            app:layout_constraintStart_toEndOf="@id/cardDuracion"
-            app:layout_constraintTop_toTopOf="@id/cardDuracion"
-            android:layout_marginStart="12dp"/>
-
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="2dp"/>
 
         <ImageButton
             android:id="@+id/btnMenuReceta"
@@ -62,12 +54,8 @@
             android:layout_height="32dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Menu"
-            app:tint="@android:color/black"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:src="@drawable/ic_more_vert_24"/>
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+            android:src="@drawable/ic_more_vert_24"
+            android:layout_gravity="end"
+            android:layout_marginTop="4dp"/>
+    </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
