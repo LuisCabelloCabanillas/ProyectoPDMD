@@ -18,6 +18,12 @@ class AdaptadorRecetas(private val listaRecetas: MutableList<Receta>) :
 
         val nombre = v.findViewById<TextView>(R.id.cardNombreReceta)
 
+        val duracion = v.findViewById<TextView>(R.id.cardDuracion)
+
+        val dificultad = v.findViewById<TextView>(R.id.cardDificultad)
+
+
+
         val btnMenu = v.findViewById<ImageView>(R.id.btnMenuReceta)
     }
 
@@ -33,6 +39,9 @@ class AdaptadorRecetas(private val listaRecetas: MutableList<Receta>) :
             .load(receta.fotoUri) // Uri? funciona
             .into(holder.imagen)
         holder.nombre.text = receta.nombre
+
+        holder.duracion.text = "${receta.duracion}"
+        holder.dificultad.text = receta.dificultad
 
         holder.btnMenu.setOnClickListener {
             val popupMenuReceta = android.widget.PopupMenu(holder.itemView.context, holder.btnMenu)

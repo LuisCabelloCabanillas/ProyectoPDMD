@@ -29,11 +29,24 @@ class PantallaInicioApp : AppCompatActivity() {
             val data = resultado.data
             val nombre = data?.getStringExtra("nombre") ?: ""
             val descripcion = data?.getStringExtra("descripcion") ?: ""
-            val ingredientes = data?.getStringExtra("ingredientes") ?: ""
+            val duracion = data?.getStringExtra("duracion") ?: ""
+            val dificultad = data?.getStringExtra("dificultad") ?: ""
+
+            val ingredientes = data?.getStringArrayListExtra("ingredientes") ?: arrayListOf()
+
             val fotoUriString = data?.getStringExtra("fotoUri")
             val fotoUri = fotoUriString?.let { Uri.parse(it) }
 
-            val recetaNueva = Receta(nombre, fotoUri, descripcion, ingredientes)
+
+            val recetaNueva = Receta(
+                nombre = nombre,
+                fotoUri = fotoUri,
+                descripcion = descripcion,
+                duracion = duracion,
+                dificultad = dificultad,
+                ingredientes = ingredientes
+            )
+
             adaptador.agregarReceta(recetaNueva)
 
         }

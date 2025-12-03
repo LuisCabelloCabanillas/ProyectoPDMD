@@ -49,14 +49,14 @@ class Anhadir_receta : AppCompatActivity() {
             seleccionarImagenLauncher.launch("image/*")
         }
 
-        val opcionesDIficultad = listOf("Facil", "Media", "Alta")
-        val adapter = ArrayAdapter(this,
-            android.R.layout.simple_dropdown_item_1line,opcionesDIficultad)
+        val opciones = listOf("Fácil", "Media", "Alta")
+        val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, opciones)
         spnDificultad.setAdapter(adapter)
 
         spnDificultad.setOnClickListener {
             spnDificultad.showDropDown()
         }
+
 
 
 

@@ -42,7 +42,7 @@
 
 
         <TextView
-            android:id="@+id/tvTiempo"
+            android:id="@+id/cardDuracion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="25 min"
@@ -54,14 +54,14 @@
 
 
         <TextView
-            android:id="@+id/tvDificultad"
+            android:id="@+id/cardDificultad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Fácil"
             android:textSize="14sp"
             android:textColor="@android:color/holo_green_dark"
-            app:layout_constraintStart_toEndOf="@id/tvTiempo"
-            app:layout_constraintTop_toTopOf="@id/tvTiempo"
+            app:layout_constraintStart_toEndOf="@id/cardDuracion"
+            app:layout_constraintTop_toTopOf="@id/cardDuracion"
             android:layout_marginStart="12dp"/>
 
 
