@@ -45,7 +45,6 @@
             android:inputType="number"
             android:hint="Duración (minutos)" />
 
-        <!-- DIFICULTAD AUTOCOMPLETE -->
         <AutoCompleteTextView
             android:id="@+id/spnDificultad"
             android:layout_width="match_parent"
@@ -55,7 +54,6 @@
             android:inputType="none"
             android:layout_marginTop="16dp" />
 
-        <!-- INGREDIENTES -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -91,5 +89,4 @@
             android:layout_marginTop="25dp" />
 
     </LinearLayout>
-
 </ScrollView>

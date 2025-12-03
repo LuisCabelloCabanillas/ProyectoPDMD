@@ -24,7 +24,7 @@ class PantallaInicioApp : AppCompatActivity() {
     private val lanzarFormulario = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) {
-        resultado ->
+            resultado ->
         if (resultado.resultCode == RESULT_OK) {
             val data = resultado.data
             val nombre = data?.getStringExtra("nombre") ?: ""

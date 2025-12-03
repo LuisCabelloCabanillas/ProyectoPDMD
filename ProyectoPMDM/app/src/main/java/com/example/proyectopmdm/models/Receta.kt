@@ -11,4 +11,4 @@ data class Receta (
     val dificultad: String,
     val ingredientes: List<String>
 
-    )
+)

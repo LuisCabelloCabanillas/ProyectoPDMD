@@ -26,6 +26,6 @@ class MainActivity : AppCompatActivity() {
         botonin.setOnClickListener {
             startActivity(Intent(this, Registrarse::class.java))
         }
-        
+
     }
 }
