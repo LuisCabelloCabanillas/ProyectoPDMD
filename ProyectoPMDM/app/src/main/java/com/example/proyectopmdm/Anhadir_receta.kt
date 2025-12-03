@@ -8,10 +8,7 @@ import android.widget.*
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.google.android.gms.common.internal.Objects
-import kotlin.time.Duration
+
 
 class Anhadir_receta : AppCompatActivity() {
     private lateinit var imgReceta: ImageView
