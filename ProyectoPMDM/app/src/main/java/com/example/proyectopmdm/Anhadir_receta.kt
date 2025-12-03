@@ -1,15 +1,18 @@
 package com.example.proyectopmdm
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.Button
+import android.widget.*
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 
 
 class Anhadir_receta : AppCompatActivity() {
+    private lateinit var imgReceta: ImageView
+    private var fotoSeleccionadaUri: Uri? = null
 
     private val listaIngredientes = mutableListOf<String>()
 
@@ -22,6 +25,7 @@ class Anhadir_receta : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -38,11 +42,9 @@ class Anhadir_receta : AppCompatActivity() {
         val spnDificultad = findViewById<AutoCompleteTextView>(R.id.spnDificultad)
         val botonAñadir = findViewById<Button>(R.id.btnAñadirForm)
 
-        // RecyclerView
-        recyclerRecetas = findViewById(R.id.recyclerRecetas)
-        recyclerRecetas.layoutManager = LinearLayoutManager(this)
-        adaptador = AdaptadorRecetas(listaRecetas)
-        recyclerRecetas.adapter = adaptador
+        botonSeleccionar.setOnClickListener {
+            seleccionarImagenLauncher.launch("image/*")
+        }
 
         val opciones = listOf("Fácil", "Media", "Alta")
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, opciones)
@@ -103,4 +105,6 @@ class Anhadir_receta : AppCompatActivity() {
 
         }
     }
+
+
 }
