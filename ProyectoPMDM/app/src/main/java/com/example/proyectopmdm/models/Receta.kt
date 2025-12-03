@@ -7,6 +7,8 @@ data class Receta (
     val nombre: String,
     val fotoUri: Uri?,
     val descripcion: String,
-    val ingredientes: String
+    val duracion: String,
+    val dificultad: String,
+    val ingredientes: List<String>
 
-    )
+)
