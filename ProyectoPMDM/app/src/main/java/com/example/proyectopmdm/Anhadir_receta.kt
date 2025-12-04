@@ -8,6 +8,7 @@ import android.widget.*
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import java.io.File
 
 
 class Anhadir_receta : AppCompatActivity() {
@@ -20,10 +21,28 @@ class Anhadir_receta : AppCompatActivity() {
         ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         if (uri != null) {
-            fotoSeleccionadaUri = uri
-            imgReceta.setImageURI(uri)
+            // Guardar la imagen en almacenamiento interno
+            val savedUri = guardarImagenInterna(uri)
+            fotoSeleccionadaUri = savedUri
+            imgReceta.setImageURI(savedUri)
         }
     }
+    private fun guardarImagenInterna(uri: Uri): Uri? {
+        return try {
+            val inputStream = contentResolver.openInputStream(uri)
+            val file = File(filesDir, "receta_${System.currentTimeMillis()}.jpg")
+            inputStream?.use { input ->
+                file.outputStream().use { output ->
+                    input.copyTo(output)
+                }
+            }
+            Uri.fromFile(file)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {

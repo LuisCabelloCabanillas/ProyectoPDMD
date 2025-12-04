@@ -22,7 +22,7 @@
         <!-- Título -->
         <TextView
             android:id="@+id/txtTituloDetalle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Título de la receta"
             android:textStyle="bold"
@@ -39,12 +39,14 @@
             cardview:cardElevation="4dp">
 
             <LinearLayout
-                android:orientation="vertical"
-                android:padding="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
 
                 <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:text="Descripción"
                     android:textStyle="bold"
                     android:textSize="18sp"
@@ -69,12 +71,14 @@
             cardview:cardElevation="4dp">
 
             <LinearLayout
-                android:orientation="vertical"
-                android:padding="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
 
                 <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:text="Ingredientes"
                     android:textStyle="bold"
                     android:textSize="18sp"
