@@ -1,5 +1,6 @@
 package com.example.proyectopmdm
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -59,7 +60,7 @@ class PantallaInicioApp : AppCompatActivity() {
 
         recyclerRecetas = findViewById(R.id.recyclerRecetas)
         recyclerRecetas.layoutManager = LinearLayoutManager(this)
-        adaptador = AdaptadorRecetas(listaRecetas)
+        adaptador = AdaptadorRecetas(listaRecetas, this)
         recyclerRecetas.adapter = adaptador
 
         val btnAddReceta = findViewById<FloatingActionButton>(R.id.btnAddReceta)
@@ -68,4 +69,32 @@ class PantallaInicioApp : AppCompatActivity() {
             lanzarFormulario.launch(intent)
         }
     }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
+
+            val pos = data?.getIntExtra("posicion", -1) ?: return
+
+            val nombre = data.getStringExtra("nombre")!!
+            val descripcion = data.getStringExtra("descripcion")!!
+            val duracion = data.getStringExtra("duracion")!!
+            val dificultad = data.getStringExtra("dificultad")!!
+            val ingredientes = data.getStringArrayListExtra("ingredientes")!!
+            val fotoUriString = data.getStringExtra("fotoUri")
+            val fotoUri = fotoUriString?.let { Uri.parse(it) }
+
+            val recetaActualizada = Receta(
+                nombre,
+                fotoUri,
+                descripcion,
+                duracion,
+                dificultad,
+                ingredientes
+            )
+
+            adaptador.actualizarReceta(pos, recetaActualizada)
+        }
+    }
+
 }
