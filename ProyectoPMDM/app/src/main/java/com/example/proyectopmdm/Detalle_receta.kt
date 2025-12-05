@@ -18,7 +18,7 @@ class Detalle_receta : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_descrip_recetas)
+        setContentView(R.layout.activity_detalle_receta)
 
         imgReceta = findViewById(R.id.imgRecetaDetalle)
         txtTitulo = findViewById(R.id.txtTituloDetalle)

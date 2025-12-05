@@ -1,5 +1,6 @@
 package com.example.proyectopmdm
 
+
 import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
@@ -10,30 +11,38 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 
+
 class Inicio_sesion : AppCompatActivity() {
 
+
     private lateinit var auth: FirebaseAuth
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_inicio_sesion)
 
+
         auth = FirebaseAuth.getInstance()
+
 
         val campoEmail = findViewById<EditText>(R.id.edtCorreo)
         val campoContra = findViewById<EditText>(R.id.edtContra)
         val btnInsesi = findViewById<Button>(R.id.btnInSe)
 
+
         btnInsesi.setOnClickListener {
             val email = campoEmail.text.toString().trim()
             val contrasenha = campoContra.text.toString().trim()
+
 
             if (validarCorreoYContrasenha(email,contrasenha)){
                 iniciarSesion(email,contrasenha)
             }
         }
     }
+
 
     private fun validarCorreoYContrasenha(email: String, contrasenha: String): Boolean{
         if (email.isEmpty()){
@@ -55,6 +64,7 @@ class Inicio_sesion : AppCompatActivity() {
         return true
     }
 
+
     private fun iniciarSesion(email: String,contrasenha: String){
         auth.signInWithEmailAndPassword(email, contrasenha)
             .addOnCompleteListener(this) { task ->
@@ -67,5 +77,6 @@ class Inicio_sesion : AppCompatActivity() {
                 }
             }
     }
+
 
 }
