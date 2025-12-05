@@ -37,6 +37,7 @@ dependencies {
     // Glide
     implementation("com.github.bumptech.glide:glide:4.15.1")
     implementation(libs.firebase.database)
+    implementation(libs.androidx.activity)
     kapt("com.github.bumptech.glide:compiler:4.15.1")
     implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
     implementation("com.google.firebase:firebase-auth-ktx")

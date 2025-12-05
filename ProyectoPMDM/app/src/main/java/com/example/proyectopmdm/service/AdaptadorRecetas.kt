@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.proyectopmdm.models.Receta
 
-
 class AdaptadorRecetas(private val listaRecetas: MutableList<Receta>) :
     RecyclerView.Adapter<AdaptadorRecetas.RecetaViewHolder>() {
 
@@ -76,3 +75,5 @@ class AdaptadorRecetas(private val listaRecetas: MutableList<Receta>) :
         notifyItemInserted(listaRecetas.size - 1)
     }
 }
+
+

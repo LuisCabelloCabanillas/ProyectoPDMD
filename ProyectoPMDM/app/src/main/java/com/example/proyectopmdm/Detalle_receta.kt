@@ -8,6 +8,6 @@ class Detalle_Receta : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_descrip_recetas)
+        setContentView(R.layout.activity_detalle_receta)
     }
 }

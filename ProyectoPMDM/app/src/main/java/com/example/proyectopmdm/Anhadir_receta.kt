@@ -31,7 +31,7 @@ class Anhadir_receta : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_anhadir_receta)
 
-        imgReceta = findViewById(R.id.imgRecetaForm)
+        imgReceta = findViewById<ImageView>(R.id.imgRecetaForm)
         val botonSeleccionar = findViewById<Button>(R.id.btnSeleccionarImagenForm)
         val edtNombre = findViewById<EditText>(R.id.edtNombreForm)
         val edtDescripcion = findViewById<EditText>(R.id.edtDescripcionForm)
@@ -53,7 +53,6 @@ class Anhadir_receta : AppCompatActivity() {
         spnDificultad.setOnClickListener {
             spnDificultad.showDropDown()
         }
-
 
 
 
