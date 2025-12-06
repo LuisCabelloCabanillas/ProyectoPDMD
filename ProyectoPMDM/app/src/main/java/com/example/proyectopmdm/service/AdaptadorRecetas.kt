@@ -61,7 +61,7 @@ class AdaptadorRecetas(private val listaRecetas: MutableList<Receta>, private va
                         val intent = Intent(context, EditarRecetaActivity::class.java).apply {
                             putExtra("posicion", position)
                             putExtra("nombre", receta.nombre)
-                            putExtra("descripcion", receta.descripcion)
+                            putExtra("instrucciones", receta.instrucciones)
                             putExtra("duracion", receta.duracion)
                             putExtra("dificultad", receta.dificultad)
                             putStringArrayListExtra("ingredientes", ArrayList(receta.ingredientes))
@@ -83,7 +83,7 @@ class AdaptadorRecetas(private val listaRecetas: MutableList<Receta>, private va
             val context = holder.itemView.context
             val intent = Intent(context, Detalle_receta::class.java).apply {
                 putExtra("nombre", receta.nombre)
-                putExtra("descripcion", receta.descripcion)
+                putExtra("instrucciones", receta.instrucciones)
                 putExtra("duracion", receta.duracion)
                 putExtra("dificultad", receta.dificultad)
                 putStringArrayListExtra("ingredientes", ArrayList(receta.ingredientes))

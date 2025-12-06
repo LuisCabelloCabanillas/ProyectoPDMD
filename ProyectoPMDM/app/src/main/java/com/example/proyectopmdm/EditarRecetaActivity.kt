@@ -12,7 +12,7 @@ import com.example.proyectopmdm.models.Receta
 class EditarRecetaActivity : AppCompatActivity() {
 
     private lateinit var editNombre: TextInputEditText
-    private lateinit var editDescripcion: TextInputEditText
+    private lateinit var editInstrucciones: TextInputEditText
     private lateinit var editIngredientes: TextInputEditText
     private lateinit var btnGuardar: Button
 
@@ -24,15 +24,15 @@ class EditarRecetaActivity : AppCompatActivity() {
         setContentView(R.layout.activity_editar_receta)
 
         editNombre = findViewById(R.id.editNombre)
-        editDescripcion = findViewById(R.id.editDescripcion)
+        editInstrucciones = findViewById(R.id.editInstrucciones)
         editIngredientes = findViewById(R.id.editIngredientes)
         btnGuardar = findViewById(R.id.btnGuardarRecetaEditada)
 
         // Recibir datos
         posicion = intent.getIntExtra("posicion", -1)
         val nombre = intent.getStringExtra("nombre") ?: ""
-        val descripcion = intent.getStringExtra("descripcion") ?: ""
-        val duracion = intent.getStringExtra("duracion") ?: ""
+        val instrucciones = intent.getStringExtra("instrucciones") ?: ""
+        val duracion = intent.getIntExtra("duracion", 0)
         val dificultad = intent.getStringExtra("dificultad") ?: ""
         val ingredientes = intent.getStringArrayListExtra("ingredientes") ?: arrayListOf()
         val fotoUriString = intent.getStringExtra("fotoUri")
@@ -41,18 +41,18 @@ class EditarRecetaActivity : AppCompatActivity() {
 
         // Rellenar formulario
         editNombre.setText(nombre)
-        editDescripcion.setText(descripcion)
+        editInstrucciones.setText(instrucciones)
         editIngredientes.setText(ingredientes.joinToString("\n"))
 
         btnGuardar.setOnClickListener {
 
             val ingredientesLista = editIngredientes.text.toString()
-                .split("\n").map { it.trim() }
+                .split("\n").map { it.trim() } .filter { it.isNotEmpty() }
 
             val recetaEditada = Receta(
                 nombre = editNombre.text.toString(),
                 fotoUri = fotoUri,
-                descripcion = editDescripcion.text.toString(),
+                instrucciones = editInstrucciones.text.toString(),
                 duracion = duracion,
                 dificultad = dificultad,
                 ingredientes = ingredientesLista
@@ -61,7 +61,7 @@ class EditarRecetaActivity : AppCompatActivity() {
             val resultIntent = Intent().apply {
                 putExtra("posicion", posicion)
                 putExtra("nombre", recetaEditada.nombre)
-                putExtra("descripcion", recetaEditada.descripcion)
+                putExtra("instrucciones", recetaEditada.instrucciones)
                 putExtra("duracion", recetaEditada.duracion)
                 putExtra("dificultad", recetaEditada.dificultad)
                 putStringArrayListExtra("ingredientes", ArrayList(recetaEditada.ingredientes))

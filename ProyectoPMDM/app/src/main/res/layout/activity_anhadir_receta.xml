@@ -33,10 +33,10 @@
             android:layout_marginTop="16dp" />
 
         <EditText
-            android:id="@+id/edtDescripcionForm"
+            android:id="@+id/edtInstruccionesForm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Descripción" />
+            android:hint="Instrucciones" />
 
         <EditText
             android:id="@+id/edtDuracionForm"

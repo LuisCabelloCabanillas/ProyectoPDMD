@@ -29,8 +29,8 @@ class PantallaInicioApp : AppCompatActivity() {
         if (resultado.resultCode == RESULT_OK) {
             val data = resultado.data
             val nombre = data?.getStringExtra("nombre") ?: ""
-            val descripcion = data?.getStringExtra("descripcion") ?: ""
-            val duracion = data?.getStringExtra("duracion") ?: ""
+            val instrucciones = data?.getStringExtra("instrucciones") ?: ""
+            val duracion = data?.getIntExtra("duracion", 0)
             val dificultad = data?.getStringExtra("dificultad") ?: ""
 
             val ingredientes = data?.getStringArrayListExtra("ingredientes") ?: arrayListOf()
@@ -42,7 +42,7 @@ class PantallaInicioApp : AppCompatActivity() {
             val recetaNueva = Receta(
                 nombre = nombre,
                 fotoUri = fotoUri,
-                descripcion = descripcion,
+                instrucciones = instrucciones,
                 duracion = duracion,
                 dificultad = dificultad,
                 ingredientes = ingredientes
@@ -77,8 +77,8 @@ class PantallaInicioApp : AppCompatActivity() {
             val pos = data?.getIntExtra("posicion", -1) ?: return
 
             val nombre = data.getStringExtra("nombre")!!
-            val descripcion = data.getStringExtra("descripcion")!!
-            val duracion = data.getStringExtra("duracion")!!
+            val instrucciones = data.getStringExtra("instrucciones")!!
+            val duracion = data.getIntExtra("duracion", 0)!!
             val dificultad = data.getStringExtra("dificultad")!!
             val ingredientes = data.getStringArrayListExtra("ingredientes")!!
             val fotoUriString = data.getStringExtra("fotoUri")
@@ -87,7 +87,7 @@ class PantallaInicioApp : AppCompatActivity() {
             val recetaActualizada = Receta(
                 nombre,
                 fotoUri,
-                descripcion,
+                instrucciones,
                 duracion,
                 dificultad,
                 ingredientes

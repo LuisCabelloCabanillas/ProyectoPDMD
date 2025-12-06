@@ -34,12 +34,14 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.9.0")
     implementation("androidx.constraintlayout:constraintlayout:2.2.0")
 
-    // Glide
+    //Glide
     implementation("com.github.bumptech.glide:glide:4.15.1")
-    implementation(libs.firebase.database)
     kapt("com.github.bumptech.glide:compiler:4.15.1")
-    implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
+
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
     implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-storage-ktx")
 }
 
 private fun DependencyHandlerScope.kapt(string: String) {}
