@@ -7,47 +7,74 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:background="@drawable/fondo_degradado_invertido">
+    android:background="@drawable/fondomain">
 
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:background="@drawable/bordes_foto"
-        android:scaleType="centerCrop"
-        android:src="@drawable/logo" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="334dp"
+        android:layout_height="425dp"
+        android:background="@drawable/redondear"
         android:orientation="vertical"
-        android:background="@drawable/redondear">
+        android:padding="24dp">
+
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="105dp"
+            android:layout_height="105dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="25dp"
+            android:background="@drawable/bordes_foto"
+            android:src="@drawable/logo" />
 
 
         <EditText
             android:id="@+id/edtCorreo"
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/input_background"
+            android:elevation="2dp"
             android:hint="Email"
             android:inputType="textEmailAddress"
-            android:textSize="20sp"
-            />
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:textSize="20sp" />
 
         <EditText
             android:id="@+id/edtContra"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+
+            android:background="@drawable/input_background"
             android:hint="Contraseña"
             android:inputType="textPassword"
-            android:textSize="20sp"
-            android:layout_height="50dp"
-            android:layout_width="350dp"/>
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tvOlvideContraseña"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="¿Olvidaste tu contraseña?"
+            android:textColor="#1565C0"
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/btnInSe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Iniciar Sesión"
             android:layout_gravity="center"
             android:backgroundTint="#1565C0"
-            />
+            android:text="Iniciar Sesión"
+            android:textSize="18sp" />
     </LinearLayout>
+
+
+
 </LinearLayout>

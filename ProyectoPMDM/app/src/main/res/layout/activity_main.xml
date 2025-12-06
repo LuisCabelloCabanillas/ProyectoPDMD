@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:background="@drawable/fondo_degradado"
+    android:background="@drawable/fondomain"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
@@ -12,13 +12,15 @@
         android:id="@+id/logo"
         android:layout_width="200dp"
         android:layout_height="200dp"
+        android:background="@drawable/logo_portada"
         android:scaleType="centerCrop"
         android:src="@drawable/logo"
-        android:background="@drawable/logo_portada"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.177" />
 
     <Button
         android:id="@+id/BotonLogin"
@@ -42,6 +44,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TituloApp" />
+        app:layout_constraintTop_toBottomOf="@+id/logo"
+        app:layout_constraintVertical_bias="0.766" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
