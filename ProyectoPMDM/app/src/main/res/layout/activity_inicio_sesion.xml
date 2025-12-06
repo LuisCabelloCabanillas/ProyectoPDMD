@@ -45,7 +45,6 @@
             android:id="@+id/edtContra"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-
             android:background="@drawable/input_background"
             android:hint="Contraseña"
             android:inputType="textPassword"
