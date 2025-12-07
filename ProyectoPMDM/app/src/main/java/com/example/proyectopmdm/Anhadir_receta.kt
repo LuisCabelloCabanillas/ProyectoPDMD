@@ -17,7 +17,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.proyectopmdm.models.Receta
-import com.example.proyectopmdm.models.RecetaFirebase
+
+
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
@@ -30,33 +31,19 @@ class Anhadir_receta : AppCompatActivity() {
     private var fotoSeleccionadaUri: Uri? = null
     private val listaIngredientes = mutableListOf<String>()
 
+    private val db = Firebase.firestore
     private val storage = Firebase.storage
+
 
     private val seleccionarImagenLauncher = registerForActivityResult(
         ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         if (uri != null) {
-            // Guardar la imagen en almacenamiento interno
-            val savedUri = guardarImagenInterna(uri)
-            fotoSeleccionadaUri = savedUri
-            imgReceta.setImageURI(savedUri)
+            fotoSeleccionadaUri = uri
+            imgReceta.setImageURI(uri)
         }
     }
-    private fun guardarImagenInterna(uri: Uri): Uri? {
-        return try {
-            val inputStream = contentResolver.openInputStream(uri)
-            val file = File(filesDir, "receta_${System.currentTimeMillis()}.jpg")
-            inputStream?.use { input ->
-                file.outputStream().use { output ->
-                    input.copyTo(output)
-                }
-            }
-            Uri.fromFile(file)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
-        }
-    }
+
 
 
     @SuppressLint("MissingInflatedId")
@@ -145,25 +132,47 @@ class Anhadir_receta : AppCompatActivity() {
         Toast.makeText(this, "Guardando Receta...", Toast.LENGTH_SHORT).show()
 
         if (recetaLocal.fotoUri != null) {
-            val storageRef = storage.reference.child("recetas_fotos/${recetaLocal.nombre}_${System.currentTimeMillis()}")
+            val storageRef =
+                storage.reference.child("recetas_fotos/${recetaLocal.nombre}_${System.currentTimeMillis()}")
 
-            storageRef.putFile(recetaLocal.fotoUri).addOnSuccessListener { taskSnapshot ->
-                taskSnapshot.storage.downloadUrl.addOnSuccessListener { uri ->
-                    val fotoUrl = uri.toString()
+            try {
+                val inputStream = contentResolver.openInputStream(recetaLocal.fotoUri!!)
 
-                    guardarDocumentoReceta(recetaLocal, fotoUrl)
+                if (inputStream != null) {
+
+                    val bytes = inputStream.readBytes()
+                    inputStream.close()
+
+                    storageRef.putBytes(bytes).addOnSuccessListener { taskSnapshot ->
+
+                        taskSnapshot.storage.downloadUrl.addOnSuccessListener { uri ->
+
+                            val fotoUrl = uri.toString()
+                            guardarDocumentoReceta(recetaLocal, fotoUrl)
+
+                        }
+
+                    }
+                } else {
+                    Toast.makeText(
+                        this,
+                        "No se pudo abrir el archivo de la imagen",
+                        Toast.LENGTH_SHORT).show()
                 }
-            } .addOnFailureListener {
-                exception ->
-                Toast.makeText(this, "Error al subir la imagen : ${exception.message}", Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(
+                    this,
+                    "Error al subir la imagen: ${e.message}",
+                    Toast.LENGTH_LONG).show()
             }
         } else {
             guardarDocumentoReceta(recetaLocal, null)
         }
     }
 
+
     private fun guardarDocumentoReceta(recetaLocal: Receta, fotoUrl: String?) {
-        val bd = FirebaseFirestore.getInstance()
 
         val recetaFinal = mapOf(
         "nombre" to recetaLocal.nombre,
@@ -174,7 +183,7 @@ class Anhadir_receta : AppCompatActivity() {
         "fotoUrl" to fotoUrl
         )
 
-        bd.collection("recetas")
+        db.collection("recetas")
             .add(recetaFinal)
             .addOnSuccessListener { documentReference ->
                 Toast.makeText(this, "Receta '${recetaLocal.nombre}' guardada con éxito", Toast.LENGTH_LONG).show()
