@@ -1,13 +1,14 @@
 package com.example.proyectopmdm
 
-import android.app.Activity
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import com.google.android.material.textfield.TextInputEditText
 import androidx.appcompat.app.AppCompatActivity
 import com.example.proyectopmdm.models.Receta
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
 
 class EditarRecetaActivity : AppCompatActivity() {
 
@@ -17,7 +18,9 @@ class EditarRecetaActivity : AppCompatActivity() {
     private lateinit var btnGuardar: Button
 
     private var fotoUri: Uri? = null
-    private var posicion: Int = -1
+    private var duracion: Int = 0
+    private var dificultad: String = ""
+    private var documentId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,11 +32,10 @@ class EditarRecetaActivity : AppCompatActivity() {
         btnGuardar = findViewById(R.id.btnGuardarRecetaEditada)
 
         // Recibir datos
-        posicion = intent.getIntExtra("posicion", -1)
         val nombre = intent.getStringExtra("nombre") ?: ""
         val instrucciones = intent.getStringExtra("instrucciones") ?: ""
-        val duracion = intent.getIntExtra("duracion", 0)
-        val dificultad = intent.getStringExtra("dificultad") ?: ""
+        duracion = intent.getIntExtra("duracion", 0)
+        dificultad = intent.getStringExtra("dificultad") ?: ""
         val ingredientes = intent.getStringArrayListExtra("ingredientes") ?: arrayListOf()
         val fotoUriString = intent.getStringExtra("fotoUri")
 
@@ -45,31 +47,55 @@ class EditarRecetaActivity : AppCompatActivity() {
         editIngredientes.setText(ingredientes.joinToString("\n"))
 
         btnGuardar.setOnClickListener {
-
             val ingredientesLista = editIngredientes.text.toString()
-                .split("\n").map { it.trim() } .filter { it.isNotEmpty() }
+                .split("\n")
+                .map { it.trim() }
+                .filter { it.isNotEmpty() }
 
             val recetaEditada = Receta(
                 nombre = editNombre.text.toString(),
-                fotoUri = fotoUri,
                 instrucciones = editInstrucciones.text.toString(),
                 duracion = duracion,
                 dificultad = dificultad,
-                ingredientes = ingredientesLista
+                ingredientes = ingredientesLista,
+                fotoUri = fotoUri
             )
 
-            val resultIntent = Intent().apply {
-                putExtra("posicion", posicion)
-                putExtra("nombre", recetaEditada.nombre)
-                putExtra("instrucciones", recetaEditada.instrucciones)
-                putExtra("duracion", recetaEditada.duracion)
-                putExtra("dificultad", recetaEditada.dificultad)
-                putStringArrayListExtra("ingredientes", ArrayList(recetaEditada.ingredientes))
-                recetaEditada.fotoUri?.let { putExtra("fotoUri", it.toString()) }
-            }
+            // Actualizar receta directamente en Firestore
+            val db = Firebase.firestore
+            db.collection("recetas")
+                .whereEqualTo("nombre", nombre)
+                .get()
+                .addOnSuccessListener { archivos ->
+                    if (archivos.isEmpty) {
+                        Toast.makeText(this, "Receta no encontrada", Toast.LENGTH_SHORT).show()
+                        return@addOnSuccessListener
+                    }
 
-            setResult(Activity.RESULT_OK, resultIntent)
-            finish()
+                    for ( archivo in archivos){
+                        val datos = hashMapOf(
+                            "nombre" to recetaEditada.nombre,
+                            "instrucciones" to recetaEditada.instrucciones,
+                            "duracion" to recetaEditada.duracion,
+                            "dificultad" to recetaEditada.dificultad,
+                            "ingredientes" to recetaEditada.ingredientes,
+                            "fotoUrl" to recetaEditada.fotoUri?.toString()
+                        )
+                        archivo.reference.set(datos)
+                            .addOnSuccessListener {
+                                Toast.makeText(this, "Receta actualizada", Toast.LENGTH_SHORT).show()
+                                finish()
+                            }
+                            .addOnFailureListener { e ->
+                                e.printStackTrace()
+                                Toast.makeText(this, "Error al actualizar receta", Toast.LENGTH_SHORT).show()
+                            }
+                    }
+                }
+                .addOnFailureListener { e ->
+                    e.printStackTrace()
+                    Toast.makeText(this, "Error al buscar receta", Toast.LENGTH_SHORT).show()
+                }
         }
     }
 }

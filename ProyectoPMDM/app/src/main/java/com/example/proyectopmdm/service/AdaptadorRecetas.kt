@@ -48,9 +48,25 @@ class AdaptadorRecetas(private val listaRecetas: MutableList<Receta>, private va
 
                     // ✔ BORRAR
                     R.id.btnMenuRecetaEliminar -> {
-                        listaRecetas.removeAt(position)
-                        notifyItemRemoved(position)
-                        notifyItemRangeChanged(position, listaRecetas.size)
+                        val receta = listaRecetas[position]
+                        val docId = receta.documentId
+                        if (docId != null) {
+                            val db = com.google.firebase.firestore.FirebaseFirestore.getInstance()
+                            db.collection("recetas").document(docId)
+                                .delete()
+                                .addOnSuccessListener {
+                                    listaRecetas.removeAt(position)
+                                    notifyItemRemoved(position)
+                                    notifyItemRangeChanged(position, listaRecetas.size)
+                                }
+                                .addOnFailureListener { e ->
+                                    e.printStackTrace()
+                                }
+                        } else {
+                            listaRecetas.removeAt(position)
+                                notifyItemRemoved(position)
+                                notifyItemRangeChanged(position, listaRecetas.size)
+                            }
                         true
                     }
 
