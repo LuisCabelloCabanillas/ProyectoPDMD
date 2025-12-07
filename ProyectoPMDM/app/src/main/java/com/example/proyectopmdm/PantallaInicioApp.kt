@@ -32,6 +32,9 @@ class PantallaInicioApp : AppCompatActivity() {
             resultado ->
         if (resultado.resultCode == RESULT_OK) {
             val data = resultado.data
+
+            val id = data?.getStringExtra("documentId")
+
             val nombre = data?.getStringExtra("nombre") ?: ""
             val instrucciones = data?.getStringExtra("instrucciones") ?: ""
             val duracion = data?.getIntExtra("duracion", 0)
@@ -44,6 +47,7 @@ class PantallaInicioApp : AppCompatActivity() {
 
 
             val recetaNueva = Receta(
+                id = id,
                 nombre = nombre,
                 fotoUri = fotoUri,
                 instrucciones = instrucciones,
@@ -83,6 +87,8 @@ class PantallaInicioApp : AppCompatActivity() {
 
                 for (docs in documentos){
 
+                    val id = docs.id
+
                     val nombre = docs.getString("nombre") ?: ""
                     val instrucciones = docs.getString("instrucciones") ?: ""
                     val duracion = docs.getLong("duracion")?.toInt()
@@ -93,6 +99,7 @@ class PantallaInicioApp : AppCompatActivity() {
                     val fotoUri = fotoUrl?.let { Uri.parse(it) }
 
                     val receta = Receta(
+                        id = id,
                         nombre = nombre,
                         instrucciones = instrucciones,
                         duracion = duracion,
@@ -118,6 +125,7 @@ class PantallaInicioApp : AppCompatActivity() {
         if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
 
             val pos = data?.getIntExtra("posicion", -1) ?: return
+
 
             val nombre = data.getStringExtra("nombre")!!
             val instrucciones = data.getStringExtra("instrucciones")!!
