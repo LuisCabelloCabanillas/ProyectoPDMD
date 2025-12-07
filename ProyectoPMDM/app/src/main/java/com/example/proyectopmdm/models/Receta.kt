@@ -9,5 +9,6 @@ data class Receta (
     val duracion: Int?,
     val dificultad: String,
     val ingredientes: List<String> = listOf(),
-    val fotoUri: Uri?
+    val fotoUri: Uri?,
+    val documentId: String? = null
 )

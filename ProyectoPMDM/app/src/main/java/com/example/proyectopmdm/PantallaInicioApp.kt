@@ -86,36 +86,18 @@ class PantallaInicioApp : AppCompatActivity() {
                 listaRecetas.clear()
 
                 for (docs in documentos){
-
-                    val id = docs.id
-
-                    val nombre = docs.getString("nombre") ?: ""
-                    val instrucciones = docs.getString("instrucciones") ?: ""
-                    val duracion = docs.getLong("duracion")?.toInt()
-                    val dificultad = docs.getString("dificultad") ?: ""
-                    val ingredientes = docs.get("ingredientes") as? List<String> ?: emptyList()
-                    val fotoUrl = docs.getString("fotoUrl")
-
-                    val fotoUri = fotoUrl?.let { Uri.parse(it) }
-
                     val receta = Receta(
-                        id = id,
-                        nombre = nombre,
-                        instrucciones = instrucciones,
-                        duracion = duracion,
-                        dificultad = dificultad,
-                        ingredientes = ingredientes,
-                        fotoUri = fotoUri
+                        nombre = docs.getString("nombre") ?: "",
+                        instrucciones = docs.getString("instrucciones") ?: "",
+                        duracion = docs.getLong("duracion")?.toInt(),
+                        dificultad = docs.getString("dificultad") ?: "",
+                        ingredientes = docs.get("ingredientes") as? List<String> ?: emptyList(),
+                        fotoUri = docs.getString("fotoUrl")?.let { Uri.parse(it) },
+                        documentId = docs.id
                     )
-
                     listaRecetas.add(receta)
-
                 }
-
                 adaptador.notifyDataSetChanged()
-            }
-            .addOnFailureListener { exception ->
-                exception.printStackTrace()
             }
     }
 
@@ -125,8 +107,6 @@ class PantallaInicioApp : AppCompatActivity() {
         if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
 
             val pos = data?.getIntExtra("posicion", -1) ?: return
-
-
             val nombre = data.getStringExtra("nombre")!!
             val instrucciones = data.getStringExtra("instrucciones")!!
             val duracion = data.getIntExtra("duracion", 0)!!
@@ -136,15 +116,30 @@ class PantallaInicioApp : AppCompatActivity() {
             val fotoUri = fotoUriString?.let { Uri.parse(it) }
 
             val recetaActualizada = Receta(
-                nombre,
-                instrucciones,
-                duracion,
-                dificultad,
-                ingredientes,
-                fotoUri
+                nombre = nombre,
+                instrucciones = instrucciones,
+                duracion = duracion,
+                dificultad = dificultad,
+                ingredientes = ingredientes,
+                fotoUri =fotoUri,
+                documentId = listaRecetas[pos].documentId
             )
 
-            adaptador.actualizarReceta(pos, recetaActualizada)
+            recetaActualizada.documentId?.let { docId ->
+                val datos = hashMapOf(
+                    "nombre" to recetaActualizada.nombre,
+                    "instrucciones" to recetaActualizada.instrucciones,
+                    "duracion" to recetaActualizada.duracion,
+                    "dificultad" to recetaActualizada.dificultad,
+                    "ingredientes" to recetaActualizada.ingredientes,
+                    "fotoUrl" to recetaActualizada.fotoUri?.toString()
+                )
+                bd.collection("recetas").document(docId)
+                    .set(datos).addOnSuccessListener { adaptador.actualizarReceta(pos, recetaActualizada) }
+                    .addOnFailureListener { it.printStackTrace() }
+            }
+
+
         }
     }
 
