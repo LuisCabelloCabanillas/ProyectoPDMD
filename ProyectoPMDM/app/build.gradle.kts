@@ -36,12 +36,18 @@ dependencies {
 
     //Glide
     implementation("com.github.bumptech.glide:glide:4.15.1")
+    implementation(libs.firebase.database)
     kapt("com.github.bumptech.glide:compiler:4.15.1")
 
-    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    implementation (platform("com.google.firebase:firebase-bom:33.4.0"))
     implementation("com.google.firebase:firebase-auth-ktx")
-    implementation("com.google.firebase:firebase-firestore-ktx")
-    implementation("com.google.firebase:firebase-storage-ktx")
+// Firestore
+    implementation ("com.google.firebase:firebase-firestore-ktx")
+
+// Storage
+    implementation ("com.google.firebase:firebase-storage-ktx")
+
+
 }
 
 private fun DependencyHandlerScope.kapt(string: String) {}

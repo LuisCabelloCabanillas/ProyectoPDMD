@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyectopmdm.models.Receta
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
 
 class PantallaInicioApp : AppCompatActivity() {
 
@@ -20,6 +22,8 @@ class PantallaInicioApp : AppCompatActivity() {
     private lateinit var adaptador: AdaptadorRecetas
 
     private val listaRecetas = mutableListOf<Receta>()
+
+    private val bd = Firebase.firestore
 
 
     private val lanzarFormulario = registerForActivityResult(
@@ -68,7 +72,46 @@ class PantallaInicioApp : AppCompatActivity() {
             val intent = Intent(this, Anhadir_receta::class.java)
             lanzarFormulario.launch(intent)
         }
+
+        cargarRecetasFirebase()
     }
+
+    private fun cargarRecetasFirebase(){
+        bd.collection("recetas").get()
+            .addOnSuccessListener { documentos ->
+                listaRecetas.clear()
+
+                for (docs in documentos){
+
+                    val nombre = docs.getString("nombre") ?: ""
+                    val instrucciones = docs.getString("instrucciones") ?: ""
+                    val duracion = docs.getLong("duracion")?.toInt()
+                    val dificultad = docs.getString("dificultad") ?: ""
+                    val ingredientes = docs.get("ingredientes") as? List<String> ?: emptyList()
+                    val fotoUrl = docs.getString("fotoUrl")
+
+                    val fotoUri = fotoUrl?.let { Uri.parse(it) }
+
+                    val receta = Receta(
+                        nombre = nombre,
+                        instrucciones = instrucciones,
+                        duracion = duracion,
+                        dificultad = dificultad,
+                        ingredientes = ingredientes,
+                        fotoUri = fotoUri
+                    )
+
+                    listaRecetas.add(receta)
+
+                }
+
+                adaptador.notifyDataSetChanged()
+            }
+            .addOnFailureListener { exception ->
+                exception.printStackTrace()
+            }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -86,11 +129,11 @@ class PantallaInicioApp : AppCompatActivity() {
 
             val recetaActualizada = Receta(
                 nombre,
-                fotoUri,
                 instrucciones,
                 duracion,
                 dificultad,
-                ingredientes
+                ingredientes,
+                fotoUri
             )
 
             adaptador.actualizarReceta(pos, recetaActualizada)

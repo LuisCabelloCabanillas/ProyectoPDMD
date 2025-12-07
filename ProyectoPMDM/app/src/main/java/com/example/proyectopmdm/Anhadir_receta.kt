@@ -1,6 +1,7 @@
 package com.example.proyectopmdm
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -17,9 +18,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.proyectopmdm.models.Receta
 import com.example.proyectopmdm.models.RecetaFirebase
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
+import com.google.firebase.storage.storage
 import java.io.File
 
 
@@ -28,7 +30,6 @@ class Anhadir_receta : AppCompatActivity() {
     private var fotoSeleccionadaUri: Uri? = null
     private val listaIngredientes = mutableListOf<String>()
 
-    private val db = Firebase.firestore
     private val storage = Firebase.storage
 
     private val seleccionarImagenLauncher = registerForActivityResult(
@@ -162,29 +163,37 @@ class Anhadir_receta : AppCompatActivity() {
     }
 
     private fun guardarDocumentoReceta(recetaLocal: Receta, fotoUrl: String?) {
-        val recetaFinal = RecetaFirebase(
-            nombre = recetaLocal.nombre,
-            instrucciones = recetaLocal.instrucciones,
-            duracion = recetaLocal.duracion,
-            dificultad = recetaLocal.dificultad,
-            ingredientes = recetaLocal.ingredientes,
-            fotoUrl = fotoUrl
+        val bd = FirebaseFirestore.getInstance()
+
+        val recetaFinal = mapOf(
+        "nombre" to recetaLocal.nombre,
+        "instrucciones" to recetaLocal.instrucciones,
+        "duracion" to recetaLocal.duracion,
+        "dificultad" to recetaLocal.dificultad,
+        "ingredientes" to recetaLocal.ingredientes,
+        "fotoUrl" to fotoUrl
         )
 
-        db.collection("recetas")
+        bd.collection("recetas")
             .add(recetaFinal)
-            .addOnSuccessListener {
-                Toast.makeText(this, "Receta '${recetaLocal.nombre}' guardada con exito", Toast.LENGTH_LONG).show()
+            .addOnSuccessListener { documentReference ->
+                Toast.makeText(this, "Receta '${recetaLocal.nombre}' guardada con éxito", Toast.LENGTH_LONG).show()
 
-                val resultado = Intent()
+                val intentResultado = Intent().apply {
+                    putExtra("nombre", recetaLocal.nombre)
+                    putExtra("instrucciones", recetaLocal.instrucciones)
+                    putExtra("duracion", recetaLocal.duracion)
+                    putExtra("dificultad", recetaLocal.dificultad)
+                    putStringArrayListExtra("ingredientes", ArrayList(recetaLocal.ingredientes))
+                    putExtra("fotoUri", fotoUrl)
+                    putExtra("documentId", documentReference.id)
 
-                setResult(RESULT_OK, resultado)
+                }
+                setResult(Activity.RESULT_OK, intentResultado)
                 finish()
             }
-            .addOnFailureListener {
-                exception ->
-                Toast.makeText(this, "Error al guardar la receta: ${exception.message}", Toast.LENGTH_LONG).show()
-            }
+            .addOnFailureListener { exception -> Toast.makeText(this, "Error al guardar: ${exception.message}",
+                Toast.LENGTH_LONG).show() }
     }
 
 }
