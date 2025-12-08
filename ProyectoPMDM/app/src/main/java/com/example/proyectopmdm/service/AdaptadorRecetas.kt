@@ -17,7 +17,7 @@ import android.util.Base64
 typealias OnRecetaAction = (Receta, Int) -> Unit
 typealias OnRecetaDelete = (Int, String) -> Unit
 
-class AdaptadorRecetas(private val listaRecetas: MutableList<Receta>,
+class AdaptadorRecetas(private val itemsList: MutableList<Receta>,
                        private val onEditClicked: OnRecetaAction,
                        private val onDeleteClicked: OnRecetaDelete) :
     RecyclerView.Adapter<AdaptadorRecetas.RecetaViewHolder>() {
@@ -37,7 +37,7 @@ class AdaptadorRecetas(private val listaRecetas: MutableList<Receta>,
     }
 
     override fun onBindViewHolder(holder: RecetaViewHolder, position: Int) {
-        val receta = listaRecetas[position]
+        val receta = itemsList[position]
 
         if (!receta.fotoBase64.isNullOrEmpty()) {
             try {
@@ -59,7 +59,7 @@ class AdaptadorRecetas(private val listaRecetas: MutableList<Receta>,
         }
 
         holder.nombre.text = receta.nombre
-        holder.duracion.text = "${receta.duracion} min"
+        holder.duracion.text = "${receta.duracion ?: 0} min"
         holder.dificultad.text = receta.dificultad
 
         holder.btnMenu.setOnClickListener {
@@ -71,7 +71,7 @@ class AdaptadorRecetas(private val listaRecetas: MutableList<Receta>,
 
                     // BORRAR
                     R.id.btnMenuRecetaEliminar -> {
-                        val docId = listaRecetas[position].id
+                        val docId = itemsList[position].id
                         if (docId != null) {
                             onDeleteClicked(position, docId)
                         } else {
@@ -97,7 +97,7 @@ class AdaptadorRecetas(private val listaRecetas: MutableList<Receta>,
             val intent = Intent(context, Detalle_receta::class.java).apply {
                 putExtra("nombre", receta.nombre)
                 putExtra("instrucciones", receta.instrucciones)
-                putExtra("duracion", receta.duracion)
+                putExtra("duracion", receta.duracion ?: 0)
                 putExtra("dificultad", receta.dificultad)
                 putStringArrayListExtra("ingredientes", ArrayList(receta.ingredientes))
                 receta.fotoBase64?.let { base64 -> putExtra("fotoBase64", base64) }
@@ -106,21 +106,25 @@ class AdaptadorRecetas(private val listaRecetas: MutableList<Receta>,
         }
     }
 
-    override fun getItemCount(): Int = listaRecetas.size
+    override fun getItemCount(): Int = itemsList.size
 
     fun actualizarReceta(pos: Int, nuevaReceta: Receta) {
-        listaRecetas[pos] = nuevaReceta
-        notifyItemChanged(pos)
+        if (pos >= 0 && pos < itemsList.size) {
+            itemsList[pos] = nuevaReceta
+            notifyItemChanged(pos)
+        }
     }
 
     fun agregarReceta(receta: Receta) {
-        listaRecetas.add(receta)
-        notifyItemInserted(listaRecetas.size - 1)
+        itemsList.add(receta)
+        notifyItemInserted(itemsList.size - 1)
     }
 
     fun eliminarReceta(pos: Int){
-        listaRecetas.removeAt(pos)
-        notifyItemRemoved(pos)
-        notifyItemRangeChanged(pos, listaRecetas.size)
+        if (pos >= 0 && pos < itemsList.size) {
+            itemsList.removeAt(pos)
+            notifyItemRemoved(pos)
+            notifyItemRangeChanged(pos, itemsList.size)
+        }
     }
 }
