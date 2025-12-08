@@ -7,11 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.proyectopmdm.models.Receta
+import android.util.Base64
 
-class AdaptadorRecetas(private val listaRecetas: MutableList<Receta>, private val activity: Activity) :
+typealias OnRecetaAction = (Receta, Int) -> Unit
+typealias OnRecetaDelete = (Int, String) -> Unit
+
+class AdaptadorRecetas(private val listaRecetas: MutableList<Receta>,
+                       private val onEditClicked: OnRecetaAction,
+                       private val onDeleteClicked: OnRecetaDelete) :
     RecyclerView.Adapter<AdaptadorRecetas.RecetaViewHolder>() {
 
     class RecetaViewHolder(v: View) : RecyclerView.ViewHolder(v) {
@@ -31,9 +39,24 @@ class AdaptadorRecetas(private val listaRecetas: MutableList<Receta>, private va
     override fun onBindViewHolder(holder: RecetaViewHolder, position: Int) {
         val receta = listaRecetas[position]
 
-        Glide.with(holder.itemView.context)
-            .load(receta.fotoUri)
-            .into(holder.imagen)
+        if (!receta.fotoBase64.isNullOrEmpty()) {
+            try {
+                // Decodifica el String Base64 a un array de bytes
+                val imageBytes = Base64.decode(receta.fotoBase64, Base64.DEFAULT)
+
+                Glide.with(holder.itemView.context)
+                    .load(imageBytes) // Carga el array de bytes
+                    .diskCacheStrategy(DiskCacheStrategy.NONE) // Opcional, para evitar caché de imágenes dinámicas
+                    .into(holder.imagen)
+            } catch (e: IllegalArgumentException) {
+                // Manejar error si el String Base64 es inválido o corrupto
+                holder.imagen.setImageResource(R.drawable.image_placeholder_bg) // Cambia esto por un placeholder de error
+                e.printStackTrace()
+            }
+        } else {
+            // Mostrar una imagen por defecto si no hay Base64
+            holder.imagen.setImageResource(R.drawable.image_placeholder_bg) // Asegúrate de tener un placeholder
+        }
 
         holder.nombre.text = receta.nombre
         holder.duracion.text = "${receta.duracion} min"
@@ -46,48 +69,22 @@ class AdaptadorRecetas(private val listaRecetas: MutableList<Receta>, private va
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
 
-                    // ✔ BORRAR
+                    // BORRAR
                     R.id.btnMenuRecetaEliminar -> {
-                        val receta = listaRecetas[position]
-                        val docId = receta.documentId
+                        val docId = listaRecetas[position].id
                         if (docId != null) {
-                            val db = com.google.firebase.firestore.FirebaseFirestore.getInstance()
-                            db.collection("recetas").document(docId)
-                                .delete()
-                                .addOnSuccessListener {
-                                    listaRecetas.removeAt(position)
-                                    notifyItemRemoved(position)
-                                    notifyItemRangeChanged(position, listaRecetas.size)
-                                }
-                                .addOnFailureListener { e ->
-                                    e.printStackTrace()
-                                }
+                            onDeleteClicked(position, docId)
                         } else {
-                            listaRecetas.removeAt(position)
-                                notifyItemRemoved(position)
-                                notifyItemRangeChanged(position, listaRecetas.size)
-                            }
-                        true
-                    }
-
-                    // ✔ EDITAR
-                    R.id.btnMenuRecetaEditar -> {
-                        val context = holder.itemView.context
-
-                        val intent = Intent(context, EditarRecetaActivity::class.java).apply {
-                            putExtra("posicion", position)
-                            putExtra("nombre", receta.nombre)
-                            putExtra("instrucciones", receta.instrucciones)
-                            putExtra("duracion", receta.duracion)
-                            putExtra("dificultad", receta.dificultad)
-                            putStringArrayListExtra("ingredientes", ArrayList(receta.ingredientes))
-                            receta.fotoUri?.let { uri -> putExtra("fotoUri", uri.toString()) }
+                            Toast.makeText(holder.itemView.context, "ID no encontrado", Toast.LENGTH_SHORT).show()
                         }
-
-                        activity.startActivityForResult(intent, 200)
                         true
                     }
 
+                    // EDITAR
+                    R.id.btnMenuRecetaEditar -> {
+                        onEditClicked(receta, position)
+                        true
+                    }
                     else -> false
                 }
             }
@@ -103,7 +100,7 @@ class AdaptadorRecetas(private val listaRecetas: MutableList<Receta>, private va
                 putExtra("duracion", receta.duracion)
                 putExtra("dificultad", receta.dificultad)
                 putStringArrayListExtra("ingredientes", ArrayList(receta.ingredientes))
-                receta.fotoUri?.let { uri -> putExtra("fotoUri", uri.toString()) }
+                receta.fotoBase64?.let { base64 -> putExtra("fotoBase64", base64) }
             }
             context.startActivity(intent)
         }
@@ -119,5 +116,11 @@ class AdaptadorRecetas(private val listaRecetas: MutableList<Receta>, private va
     fun agregarReceta(receta: Receta) {
         listaRecetas.add(receta)
         notifyItemInserted(listaRecetas.size - 1)
+    }
+
+    fun eliminarReceta(pos: Int){
+        listaRecetas.removeAt(pos)
+        notifyItemRemoved(pos)
+        notifyItemRangeChanged(pos, listaRecetas.size)
     }
 }

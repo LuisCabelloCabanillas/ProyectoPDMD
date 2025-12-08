@@ -1,10 +1,15 @@
 package com.example.proyectopmdm
 
+
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
@@ -17,13 +22,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.proyectopmdm.models.Receta
-
-
 import com.google.firebase.Firebase
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
-import com.google.firebase.storage.storage
-import java.io.File
+import java.io.ByteArrayOutputStream
 
 
 class Anhadir_receta : AppCompatActivity() {
@@ -32,7 +33,6 @@ class Anhadir_receta : AppCompatActivity() {
     private val listaIngredientes = mutableListOf<String>()
 
     private val db = Firebase.firestore
-    private val storage = Firebase.storage
 
 
     private val seleccionarImagenLauncher = registerForActivityResult(
@@ -41,6 +41,54 @@ class Anhadir_receta : AppCompatActivity() {
         if (uri != null) {
             fotoSeleccionadaUri = uri
             imgReceta.setImageURI(uri)
+        }
+    }
+
+    private fun comprimirYConvertirABase64(context: Context, imageUri: Uri): String?{
+        val MAX_SIZE_BYTES = 800 * 1024
+        val MAX_DIMENSION = 1024
+
+        try {
+            val options = BitmapFactory.Options()
+            options.inJustDecodeBounds = true
+            BitmapFactory.decodeStream(context.contentResolver.openInputStream(imageUri), null, options)
+
+            var scaleFactor = 1
+            if (options.outHeight > MAX_DIMENSION || options.outWidth > MAX_DIMENSION) {
+                val heightRatio = Math.round(options.outHeight.toFloat() / MAX_DIMENSION)
+                val widthRatio = Math.round(options.outWidth.toFloat() / MAX_DIMENSION)
+                scaleFactor = if (heightRatio > widthRatio) heightRatio else widthRatio
+            }
+
+            options.inJustDecodeBounds = false
+            options.inSampleSize = scaleFactor
+
+            val inputStream = context.contentResolver.openInputStream(imageUri)
+            val scaledBitmap = BitmapFactory.decodeStream(inputStream, null, options) ?: return null
+
+            val outputStream = ByteArrayOutputStream()
+            var quality = 70
+            scaledBitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream)
+
+            while (outputStream.toByteArray().size > MAX_SIZE_BYTES && quality > 10) {
+                outputStream.reset()
+                quality -= 10
+                scaledBitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream)
+            }
+
+            val imageBytes = outputStream.toByteArray()
+
+            if (imageBytes.size > MAX_SIZE_BYTES) {
+                Toast.makeText(context, "Imagen demasiado grande (${imageBytes.size / 1024}KB).", Toast.LENGTH_LONG).show()
+                return null
+            }
+
+            return Base64.encodeToString(imageBytes, Base64.DEFAULT)
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(context, "Error al procesar la imagen: ${e.message}", Toast.LENGTH_LONG).show()
+            return null
         }
     }
 
@@ -119,7 +167,7 @@ class Anhadir_receta : AppCompatActivity() {
                 duracion = duracion,
                 dificultad = dificultad,
                 ingredientes = listaIngredientes,
-                fotoUri = fotoSeleccionadaUri
+                fotoBase64 = null
             )
 
             subirRecetaAFirebase(recetaLocal)
@@ -131,48 +179,22 @@ class Anhadir_receta : AppCompatActivity() {
 
         Toast.makeText(this, "Guardando Receta...", Toast.LENGTH_SHORT).show()
 
-        if (recetaLocal.fotoUri != null) {
-            val storageRef =
-                storage.reference.child("recetas_fotos/${recetaLocal.nombre}_${System.currentTimeMillis()}")
+        var fotoBase64: String? = null
 
-            try {
-                val inputStream = contentResolver.openInputStream(recetaLocal.fotoUri!!)
+        if (fotoSeleccionadaUri != null) {
 
-                if (inputStream != null) {
+            fotoBase64 = comprimirYConvertirABase64(this, fotoSeleccionadaUri!!)
 
-                    val bytes = inputStream.readBytes()
-                    inputStream.close()
-
-                    storageRef.putBytes(bytes).addOnSuccessListener { taskSnapshot ->
-
-                        taskSnapshot.storage.downloadUrl.addOnSuccessListener { uri ->
-
-                            val fotoUrl = uri.toString()
-                            guardarDocumentoReceta(recetaLocal, fotoUrl)
-
-                        }
-
-                    }
-                } else {
-                    Toast.makeText(
-                        this,
-                        "No se pudo abrir el archivo de la imagen",
-                        Toast.LENGTH_SHORT).show()
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Toast.makeText(
-                    this,
-                    "Error al subir la imagen: ${e.message}",
-                    Toast.LENGTH_LONG).show()
+            if (fotoBase64 == null) {
+                return
             }
-        } else {
-            guardarDocumentoReceta(recetaLocal, null)
         }
+
+        guardarDocumentoReceta(recetaLocal, fotoBase64)
     }
 
 
-    private fun guardarDocumentoReceta(recetaLocal: Receta, fotoUrl: String?) {
+    private fun guardarDocumentoReceta(recetaLocal: Receta, fotoBase64: String?) {
 
         val recetaFinal = mapOf(
         "nombre" to recetaLocal.nombre,
@@ -180,7 +202,7 @@ class Anhadir_receta : AppCompatActivity() {
         "duracion" to recetaLocal.duracion,
         "dificultad" to recetaLocal.dificultad,
         "ingredientes" to recetaLocal.ingredientes,
-        "fotoUrl" to fotoUrl
+        "fotoBase64" to (fotoBase64 ?: "")
         )
 
         db.collection("recetas")
@@ -194,7 +216,7 @@ class Anhadir_receta : AppCompatActivity() {
                     putExtra("duracion", recetaLocal.duracion)
                     putExtra("dificultad", recetaLocal.dificultad)
                     putStringArrayListExtra("ingredientes", ArrayList(recetaLocal.ingredientes))
-                    putExtra("fotoUri", fotoUrl)
+                    putExtra("fotoBase64", fotoBase64)
                     putExtra("documentId", documentReference.id)
 
                 }
