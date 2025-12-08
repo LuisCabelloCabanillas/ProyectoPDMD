@@ -37,6 +37,9 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.activity:activity-ktx:1.9.0")
     implementation("androidx.constraintlayout:constraintlayout:2.2.0")
+    implementation(libs.androidx.monitor)
+    implementation(libs.androidx.junit.ktx)
+    testImplementation(kotlin("test"))
 
     //Glide
     implementation("com.github.bumptech.glide:glide:4.15.1")
@@ -51,6 +54,7 @@ dependencies {
 
     // Storage
     implementation ("com.google.firebase:firebase-storage")
+
 
 
 }

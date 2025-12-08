@@ -47,8 +47,8 @@ class Detalle_receta : AppCompatActivity() {
         tvInstrucciones.text = instrucciones
 
         //Asignar Duración y Dificultad
-        tvDuracion.text = "$duracion min"
-        tvDificultad.text = dificultad
+        tvDuracion.text = "Duración: $duracion min"
+        tvDificultad.text = "Dificultad: $dificultad"
 
         //Formatear la lista de ingredientes (añadiendo viñetas)
         tvIngredientes.text = ingredientesList.joinToString("\n") { "• $it" }

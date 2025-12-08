@@ -9,13 +9,13 @@
     android:gravity="center"
     android:background="@drawable/fondomain">
 
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="334dp"
+        android:layout_height="384dp"
         android:background="@drawable/redondear"
         android:orientation="vertical"
-        android:padding="24dp"
-        android:layout_marginHorizontal="16dp">
+        android:padding="24dp">
 
         <ImageView
             android:id="@+id/logo"
@@ -43,7 +43,8 @@
             android:id="@+id/edtContraRe"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginBottom="36dp" android:background="@drawable/input_background"
+            android:layout_marginBottom="36dp"
+            android:background="@drawable/input_background"
             android:elevation="2dp"
             android:hint="Contraseña"
             android:inputType="textPassword"
@@ -56,7 +57,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:backgroundTint="#9CB3CF" android:text="REGISTRARSE"
+            android:backgroundTint="#9CB3CF"
+            android:text="Registrarse"
             android:textSize="18sp" />
 
     </LinearLayout>
