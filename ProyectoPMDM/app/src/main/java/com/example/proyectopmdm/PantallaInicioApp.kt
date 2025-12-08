@@ -44,7 +44,6 @@ class PantallaInicioApp : AppCompatActivity() {
             val dificultad = data?.getStringExtra("dificultad") ?: ""
             val ingredientes = data?.getStringArrayListExtra("ingredientes") ?: arrayListOf()
             val fotoBase64String = data?.getStringExtra("fotoBase64")
-            val fotoBase64 = fotoBase64String?.let { Uri.parse(it) }
 
             val recetaNueva = Receta(
                 id = id,
@@ -86,10 +85,37 @@ class PantallaInicioApp : AppCompatActivity() {
         lanzarEdicion.launch(intent)
     }
 
+    //LANZADOR PARA SOLICITAR PERMISOS EN TIEMPO DE EJECUCIÓN
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) {
+                Toast.makeText(this, "Permiso de almacenamiento concedido.", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Permiso de almacenamiento denegado. No podrás subir fotos.", Toast.LENGTH_LONG).show()
+            }
+        }
+
+    private fun checkAndRequestPermission() {
+        //Definimos el permiso a verificar basado en la versión de Android
+        val permission = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            android.Manifest.permission.READ_MEDIA_IMAGES
+        } else {
+            android.Manifest.permission.READ_EXTERNAL_STORAGE
+        }
+
+        //Verificar si el permiso ya está concedido
+        if (checkSelfPermission(permission) == android.content.pm.PackageManager.PERMISSION_GRANTED) {
+        } else {
+            requestPermissionLauncher.launch(permission)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_pantalla_inicio_app)
+
+        checkAndRequestPermission()
 
         recyclerRecetas = findViewById(R.id.recyclerRecetas)
 
